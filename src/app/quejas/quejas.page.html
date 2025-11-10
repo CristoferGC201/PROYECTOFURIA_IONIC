@@ -1,0 +1,59 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="danger">
+    <ion-title>Centro de Quejas (Chatbot)</ion-title>
+    <ion-buttons slot="end">
+      <ion-label color="light" class="ion-padding-end">
+        Hola, {{ (typeof localStorage !== 'undefined' && localStorage.getItem('usuarioActivo')) || 'Invitado' }}
+      </ion-label>
+      <ion-button routerLink="/login">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" [fullscreen]="true">
+  
+  <ion-list lines="none" class="chat-box-ionic">
+    <div *ngFor="let msg of mensajes">
+        <p [ngClass]="msg.autor" class="mensaje-bubble">
+            {{ msg.texto }}
+        </p>
+    </div>
+  </ion-list>
+
+  <div *ngIf="paso === 0" class="opciones">
+    <ion-button 
+        *ngFor="let opcion of opciones" 
+        (click)="seleccionarMotivo(opcion)" 
+        expand="block" 
+        fill="outline" 
+        color="danger" 
+        class="ion-margin-bottom">
+      {{ opcion }}
+    </ion-button>
+  </div>
+
+  <div *ngIf="!conversacionActiva && paso > 0" class="reiniciar-box ion-text-center ion-margin-top">
+    <ion-label class="ion-padding-bottom">¡Conversación finalizada! ¿Deseas iniciar una nueva queja?</ion-label>
+    <ion-button (click)="iniciarConversacion()" expand="block" color="danger">
+      <ion-icon name="refresh-outline" slot="start"></ion-icon>
+      Nueva conversación
+    </ion-button>
+  </div>
+</ion-content>
+
+<ion-footer *ngIf="conversacionActiva && paso > 0">
+  <ion-toolbar>
+    <ion-input 
+      [(ngModel)]="entradaUsuario" 
+      placeholder="Escribe tu respuesta..." 
+      (keyup.enter)="enviarMensaje()" 
+      slot="start"
+      class="ion-padding-start"
+    ></ion-input>
+    <ion-button (click)="enviarMensaje()" slot="end" color="danger" [disabled]="!entradaUsuario.trim()">
+      <ion-icon name="send"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

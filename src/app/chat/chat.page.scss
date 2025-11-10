@@ -1,0 +1,23 @@
+// Estos estilos son opcionales, pero ayudan a centrar el contenido en pantallas grandes
+ion-content {
+    // Esto asegura que el contenido esté centrado en web (aunque no en móvil)
+    --background: #f4f4f4; // Un fondo claro para que resalte la tarjeta
+}
+
+.auth-card {
+    // Restringe el ancho de la tarjeta para que se vea bien en desktop
+    max-width: 450px;
+    margin: 40px auto; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    // Si quieres el fondo oscuro de tu tema original:
+    // --background: #0b1622;
+    // color: white;
+}
+
+// Estilos para los enlaces dentro de la tarjeta
+p a {
+    color: var(--ion-color-danger); // Usa el color del botón (rojo) de Ionic
+    font-weight: bold;
+    cursor: pointer;
+}

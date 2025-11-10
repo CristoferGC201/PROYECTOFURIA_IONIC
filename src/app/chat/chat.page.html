@@ -1,0 +1,77 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>Autenticación de Usuario</ion-title>
+    <ion-buttons slot="end">
+        <ion-text color="light" class="ion-padding-end">
+            <ion-icon name="person-circle-outline"></ion-icon>
+        </ion-text>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding ion-text-center">
+  <div class="ion-text-center ion-padding-top">
+    <ion-icon name="lock-closed-outline" size="large" color="primary"></ion-icon>
+    <h1 class="ion-no-margin ion-margin-bottom">Bienvenido</h1>
+  </div>
+    
+  <ion-card class="auth-card">
+    <ion-card-content>
+
+      <div *ngIf="modo === 'login'">
+        <ion-card-header>
+          <ion-title size="large">Iniciar Sesión</ion-title>
+        </ion-card-header>
+
+        <ion-item lines="full">
+          <ion-label position="floating">Correo electrónico</ion-label>
+          <ion-input type="email" [(ngModel)]="email" required></ion-input>
+        </ion-item>
+        <ion-item lines="full">
+          <ion-label position="floating">Contraseña</ion-label>
+          <ion-input type="password" [(ngModel)]="password" required></ion-input>
+        </ion-item>
+
+        <ion-button expand="block" color="primary" (click)="login()" class="ion-margin-top ion-margin-bottom">
+          <ion-icon name="log-in-outline" slot="start"></ion-icon>
+          Entrar
+        </ion-button>
+
+        <p class="ion-margin-top">
+          ¿No tienes cuenta? 
+          <a (click)="cambiarModo('registro')" color="primary">Regístrate</a>
+        </p>
+      </div>
+
+      <div *ngIf="modo === 'registro'">
+        <ion-card-header>
+          <ion-title size="large">Crear Cuenta</ion-title>
+        </ion-card-header>
+
+        <ion-item lines="full">
+          <ion-label position="floating">Nombre completo</ion-label>
+          <ion-input type="text" [(ngModel)]="nombre" required></ion-input>
+        </ion-item>
+        <ion-item lines="full">
+          <ion-label position="floating">Correo electrónico</ion-label>
+          <ion-input type="email" [(ngModel)]="email" required></ion-input>
+        </ion-item>
+        <ion-item lines="full">
+          <ion-label position="floating">Contraseña</ion-label>
+          <ion-input type="password" [(ngModel)]="password" required></ion-input>
+        </ion-item>
+
+        <ion-button expand="block" color="secondary" (click)="registrar()" class="ion-margin-top ion-margin-bottom">
+          <ion-icon name="person-add-outline" slot="start"></ion-icon>
+          Registrar
+        </ion-button>
+
+        <p class="ion-margin-top">
+          ¿Ya tienes cuenta? 
+          <a (click)="cambiarModo('login')" color="primary">Inicia sesión</a>
+        </p>
+      </div>
+      
+    </ion-card-content>
+  </ion-card>
+</ion-content>

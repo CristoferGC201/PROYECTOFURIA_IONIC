@@ -1,0 +1,76 @@
+// Definir color de fondo oscuro para toda la página
+ion-content {
+    --background: #1c1c1c; 
+    --padding-top: 15px;
+}
+
+// Variables de estilo de burbuja
+$sistema-color: #444; 
+$usuario-color: var(--ion-color-danger); // Rojo del tema
+$text-light: #eee;
+$text-dark: #fff;
+
+.mensaje-bubble {
+    font-size: 0.95rem;
+    padding: 10px 15px;
+    margin: 8px 0;
+    border-radius: 20px;
+    max-width: 80%;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    opacity: 0; 
+    animation: fadeIn 0.3s ease-in forwards;
+}
+
+// Burbujas del sistema (a la izquierda)
+.sistema {
+    background-color: $sistema-color;
+    color: $text-light;
+    float: left;
+    border-bottom-left-radius: 4px; 
+    margin-left: 5px;
+}
+
+// Burbujas del usuario (a la derecha)
+.usuario {
+    background-color: $usuario-color;
+    color: $text-dark;
+    float: right;
+    border-bottom-right-radius: 4px;
+    margin-right: 5px;
+}
+
+// Limpiar floats después de las burbujas
+.chat-box-ionic::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+// Estilos del footer de entrada
+ion-footer ion-toolbar {
+    --background: #2c2c2c; 
+    padding: 5px 10px;
+}
+
+ion-footer ion-input {
+    --background: #333;
+    --color: #fff; 
+    border-radius: 20px;
+    margin-right: 10px;
+    height: 40px;
+}
+
+.reiniciar-box {
+    padding: 1rem;
+    background-color: #2c2c2c;
+    border-radius: 8px;
+    color: #eee;
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
