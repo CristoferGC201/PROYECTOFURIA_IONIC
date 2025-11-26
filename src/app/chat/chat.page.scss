@@ -1,23 +1,87 @@
-// Estos estilos son opcionales, pero ayudan a centrar el contenido en pantallas grandes
-ion-content {
-    // Esto asegura que el contenido esté centrado en web (aunque no en móvil)
-    --background: #f4f4f4; // Un fondo claro para que resalte la tarjeta
+.chat-background {
+  --background: url('../../assets/camiones-bg.jpg') no-repeat center center / cover;
+  position: relative;
 }
 
-.auth-card {
-    // Restringe el ancho de la tarjeta para que se vea bien en desktop
-    max-width: 450px;
-    margin: 40px auto; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
-    // Si quieres el fondo oscuro de tu tema original:
-    // --background: #0b1622;
-    // color: white;
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(20, 20, 20, 0.55);
+  backdrop-filter: blur(3px);
 }
 
-// Estilos para los enlaces dentro de la tarjeta
-p a {
-    color: var(--ion-color-danger); // Usa el color del botón (rojo) de Ionic
-    font-weight: bold;
-    cursor: pointer;
+.auth-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 420px;
+  background: rgba(25, 25, 25, 0.65);
+  padding: 35px 30px;
+  border-radius: 20px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+.logo-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.logo {
+  width: 40px;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ff563f;
+}
+
+.subtitle {
+  font-size: 1.3rem;
+  margin: 5px 0;
+}
+
+.subtext {
+  opacity: 0.8;
+  font-size: 0.95rem;
+  margin-bottom: 25px;
+}
+
+.input-field {
+  --background: rgba(255,255,255,0.08);
+  margin-bottom: 15px;
+  border-radius: 12px;
+  padding: 0 10px;
+}
+
+.input-field ion-input {
+  color: #fff;
+}
+
+.btn-chat {
+  width: 100%;
+  background: #ff563f;
+  color: white;
+  border-radius: 12px;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.change-mode {
+  margin-top: 20px;
+  font-size: 0.9rem;
+}
+
+.change-mode span {
+  color: #ff563f;
+  font-weight: bold;
+  cursor: pointer;
 }
