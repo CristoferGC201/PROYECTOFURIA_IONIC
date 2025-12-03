@@ -1,0 +1,15 @@
+/* Tamaño global de letra */
+:root {
+  --font-size-base: 16px;
+}
+
+body, ion-content, ion-item, ion-label {
+  font-size: var(--font-size-base) !important;
+}
+
+/* Modo para daltónicos (alto contraste) */
+body.daltonicos {
+  --ion-color-primary: #0000ff !important;
+  --ion-color-secondary: #ff9900 !important;
+  filter: contrast(1.4);
+}

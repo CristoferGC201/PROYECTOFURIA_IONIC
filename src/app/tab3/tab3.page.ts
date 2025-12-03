@@ -33,4 +33,25 @@ export class Tab3Page implements OnInit {
     localStorage.clear();
     this.router.navigate(['/login']);
   }
+
+  
+  modoOscuro = false;
+  modoDaltonicos = false;
+  tamanoLetra = '16px';
+
+  // ACTIVAR / DESACTIVAR MODO OSCURO
+  toggleDarkMode() {
+    document.body.classList.toggle('dark', this.modoOscuro);
+  }
+
+  // MODO DALTONICOS (ALTO CONTRASTE)
+  toggleDaltonicos() {
+    document.body.classList.toggle('daltonicos', this.modoDaltonicos);
+  }
+
+  // CAMBIA TAMAÑO DE LETRA GLOBAL
+  cambiarTamanoLetra() {
+    document.documentElement.style.setProperty('--font-size-base', this.tamanoLetra);
+  }
+
 }

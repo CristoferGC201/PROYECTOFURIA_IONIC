@@ -9,6 +9,30 @@
 <ion-content [fullscreen]="true" class="ion-padding ion-text-center">
     
     <h2 class="ion-padding-top">¡Hola, {{ nombre }}!</h2>
+    
+  <h2 class="ion-text-center">Opciones de accesibilidad</h2>
+
+  <!-- MODO OSCURO -->
+  <ion-item>
+    <ion-label>Modo Oscuro</ion-label>
+    <ion-toggle [(ngModel)]="modoOscuro" (ionChange)="toggleDarkMode()"></ion-toggle>
+  </ion-item>
+
+  <!-- MODO DALTONISMO -->
+  <ion-item>
+    <ion-label>Modo Daltónicos</ion-label>
+    <ion-toggle [(ngModel)]="modoDaltonicos" (ionChange)="toggleDaltonicos()"></ion-toggle>
+  </ion-item>
+
+  <!-- TAMAÑO DE LETRA -->
+  <ion-item>
+    <ion-label>Tamaño de letra</ion-label>
+    <ion-select [(ngModel)]="tamanoLetra" (ionChange)="cambiarTamanoLetra()">
+      <ion-select-option value="16px">Normal</ion-select-option>
+      <ion-select-option value="18px">Grande</ion-select-option>
+      <ion-select-option value="20px">Muy grande</ion-select-option>
+    </ion-select>
+  </ion-item>
 
     <ion-button expand="block" color="danger" (click)="logout()" style="margin-top: 50px;">
         <ion-icon slot="start" name="log-out-outline"></ion-icon>
