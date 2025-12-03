@@ -13,72 +13,69 @@
 
   <div class="contenedor">
 
-    <!-- ====================================== -->
-    <!--             LISTA DE CHATS             -->
-    <!-- ====================================== -->
     <div class="panel-chats">
       <h3>Conversaciones</h3>
 
       <div 
         class="chat-item" 
-        *ngFor="let chat of listaChats; let i = index"
-        [class.activo]="i === indiceConversacionActiva"
-        (click)="abrirConversacion(i)"
+        *ngFor="let chat of chats"
+        [class.activo]="chatActivo && chat.id === chatActivo.id"
+        (click)="seleccionarChat(chat)"
       >
-        <div class="chat-nombre">{{ chat.nombre }}</div>
+        <div class="chat-nombre">{{ chat.titulo }}</div>
         <div class="chat-estado">{{ chat.estado }}</div>
       </div>
 
-      <ion-button expand="block" fill="outline" (click)="nuevaConversacion()">
+      <div *ngIf="chats.length === 0" style="text-align: center; padding: 10px; color: gray;">
+        <small>Sin conversaciones</small>
+      </div>
+
+      <ion-button expand="block" fill="outline" class="ion-margin-top" (click)="nuevaConversacion()">
         <ion-icon name="add-outline"></ion-icon>
         Nuevo Chat
       </ion-button>
     </div>
 
-    <!-- ====================================== -->
-    <!--          ÁREA DE CONVERSACIÓN          -->
-    <!-- ====================================== -->
     <div class="panel-chat">
 
-      <div class="mensajes">
-        <div *ngFor="let msg of conversacion.mensajes">
+      <div *ngIf="!chatActivo" style="display: flex; justify-content: center; align-items: center; height: 100%; color: gray;">
+        <p>Selecciona o crea una conversación</p>
+      </div>
 
-          <!-- Mensaje del sistema -->
+      <div class="mensajes" *ngIf="chatActivo">
+        <div *ngFor="let msg of mensajes">
+
           <div class="mensaje sistema" *ngIf="msg.autor === 'sistema'">
-            <div class="burbuja burbuja-sistema">{{ msg.texto }}</div>
+            <div class="burbuja burbuja-sistema">{{ msg.text }}</div>
           </div>
 
-          <!-- Mensaje del usuario -->
           <div class="mensaje usuario" *ngIf="msg.autor === 'usuario'">
-            <div class="burbuja burbuja-usuario">{{ msg.texto }}</div>
+            <div class="burbuja burbuja-usuario">{{ msg.text }}</div>
           </div>
 
         </div>
 
-        <!-- BOT ESTÁ ESCRIBIENDO -->
         <div class="bot-escribiendo" *ngIf="botEscribiendo">
           <div class="loader"></div>
           <span>El sistema está escribiendo...</span>
         </div>
       </div>
 
-      <!-- OPCIONES INICIALES -->
-      <div class="opciones" *ngIf="conversacion.paso === 0">
+      <div class="opciones" *ngIf="chatActivo && pasoConversacion === 0">
         <button 
           class="opcion" 
-          *ngFor="let op of conversacion.opciones" 
+          *ngFor="let op of opciones" 
           (click)="seleccionarMotivo(op)"
         >
           {{ op }}
         </button>
       </div>
 
-      <!-- CAJA DE TEXTO -->
-      <ion-footer class="footer-chat" *ngIf="conversacion.conversacionActiva">
+      <ion-footer class="footer-chat" *ngIf="chatActivo && pasoConversacion < 3">
         <div class="input-area">
           <ion-input
             placeholder="Escribe tu mensaje..."
-            [(ngModel)]="conversacion.entradaUsuario"
+            [(ngModel)]="entradaUsuario"
             (keyup.enter)="enviarMensaje()"
           ></ion-input>
           <ion-button (click)="enviarMensaje()" fill="clear">

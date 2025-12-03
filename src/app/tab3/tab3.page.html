@@ -1,17 +1,18 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>
-      Tab 3
+      Cuenta
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="ion-padding ion-text-center">
+    
+    <h2 class="ion-padding-top">¡Hola, {{ nombre }}!</h2>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+    <ion-button expand="block" color="danger" (click)="logout()" style="margin-top: 50px;">
+        <ion-icon slot="start" name="log-out-outline"></ion-icon>
+        CERRAR SESIÓN
+    </ion-button>
+
 </ion-content>
