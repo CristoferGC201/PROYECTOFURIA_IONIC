@@ -36,7 +36,6 @@ export class QuejasPage implements OnInit {
   opciones = ['No recibí mi pedido', 'Producto defectuoso', 'Cobro incorrecto', 'Atención al cliente', 'Otro'];
 
   constructor(private dbService: DatabaseService) {
-    // Registramos iconos
     addIcons({ trashOutline, addOutline, sendOutline, addCircleOutline });
   }
 
@@ -46,19 +45,18 @@ export class QuejasPage implements OnInit {
   }
 
   async cargarChats() {
+    // El servicio ya decide si usar SQLite (Android) o LocalStorage (Web)
     this.chats = await this.dbService.obtenerChats(this.userId);
+    
     if (this.chats.length === 0) {
       await this.nuevaConversacion();
-    } else {
-      // Si no hay chat activo, intenta abrir el primero
-      if (!this.chatActivo && this.chats.length > 0) {
-        // Opcional: this.seleccionarChat(this.chats[0]);
-      }
-    }
+    } 
   }
 
   async nuevaConversacion() {
-    const titulo = `Queja #${this.chats.length + 1}`;
+    // CORRECCIÓN IMPORTANTE: Usar backticks (`) para que funcione la variable
+    const titulo = `Queja #${this.chats.length + 1}`; 
+    
     const nuevoId = await this.dbService.crearChat(this.userId, titulo);
     if(nuevoId) {
       await this.cargarChats();
@@ -75,38 +73,36 @@ export class QuejasPage implements OnInit {
     this.chatActivo = chat;
     this.mensajes = await this.dbService.obtenerMensajes(chat.id);
     this.scrollToBottom();
+    // Intenta deducir en qué paso se quedó la conversación
     this.pasoConversacion = this.mensajes.length > 2 ? 99 : 0;
   }
 
-  // --- 🛑 SOLUCIÓN DEFINITIVA: BORRADO NATIVO 🛑 ---
+  // --- BORRADO NATIVO (CONFIRMACIÓN DEL SISTEMA) ---
   async confirmarBorrado(chat: any, event: Event) {
-    // 1. Detener propagación (para que no abra el chat al dar clic en borrar)
-    event.stopPropagation();
+    event.stopPropagation(); // Evita abrir el chat al borrar
 
-    // 2. Usar la ventana de confirmación del sistema (No puede fallar)
     const confirmacion = window.confirm(`¿Estás seguro de borrar "${chat.titulo}"?`);
 
     if (confirmacion) {
-      // Si el usuario dijo "Aceptar"
       await this.dbService.borrarChat(chat.id);
       
-      // Limpiar pantalla si borramos el chat actual
+      // Si borramos el chat activo, limpiamos la pantalla
       if (this.chatActivo && this.chatActivo.id === chat.id) {
         this.chatActivo = null;
         this.mensajes = [];
       }
       
-      // Recargar lista
       await this.cargarChats();
     }
   }
 
-  // --- CHAT LOGIC ---
+  // --- LÓGICA DEL CHAT ---
   async enviarMensaje() {
     if (!this.entradaUsuario.trim() || !this.chatActivo) return;
     const txt = this.entradaUsuario;
     this.entradaUsuario = '';
 
+    // Guardamos en BD (Web o Nativa)
     await this.dbService.guardarMensaje(this.chatActivo.id, txt, 'usuario');
     this.mensajes.push({ text: txt, autor: 'usuario' });
     this.scrollToBottom();
@@ -133,6 +129,7 @@ export class QuejasPage implements OnInit {
     this.botEscribiendo = true;
     setTimeout(async () => {
       await this.dbService.guardarMensaje(chatId, txt, 'sistema');
+      
       if(this.chatActivo && this.chatActivo.id === chatId) {
         this.mensajes.push({ text: txt, autor: 'sistema' });
         this.scrollToBottom();

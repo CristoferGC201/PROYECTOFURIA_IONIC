@@ -50,6 +50,7 @@ export class ChatPage implements OnInit {
     this.nombre = '';
   }
 
+  // --- REGISTRO REAL ---
   async registrar() {
     if (!this.email || !this.password || !this.nombre) {
       alert('Por favor, completa todos los campos.'); 
@@ -63,6 +64,7 @@ export class ChatPage implements OnInit {
     };
 
     try {
+      // Llamamos al servicio real (Web o Nativo)
       await this.dbService.registrarUsuario(newUser);
       
       const dominio = this.email.split('@')[1];
@@ -75,7 +77,7 @@ export class ChatPage implements OnInit {
       // --- LÓGICA PARA MENSAJES AMIGABLES ---
       let mensajeMostrar = 'Ocurrió un error desconocido al registrar.';
 
-      // 1. Error Web (Lanzado manualmente en database.service.ts)
+      // 1. Error Web (Lanzado manualmente)
       if (error.message && error.message.includes('El correo ya existe')) {
         mensajeMostrar = '⚠️ Ese correo ya está registrado. Por favor inicia sesión.';
       }
@@ -88,12 +90,13 @@ export class ChatPage implements OnInit {
     }
   }
 
+  // --- LOGIN REAL ---
   async login() {
     try {
       const usuario = await this.dbService.login(this.email, this.password);
 
       if (usuario) {
-        // Guardar sesión temporal en memoria para usarla en las otras pestañas
+        // Guardar sesión temporal
         localStorage.setItem('userId', usuario.id!.toString());
         localStorage.setItem('userName', usuario.name);
         localStorage.setItem('userDomain', usuario.domain!);
