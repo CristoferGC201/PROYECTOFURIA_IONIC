@@ -22,8 +22,14 @@
         [class.activo]="chatActivo && chat.id === chatActivo.id"
         (click)="seleccionarChat(chat)"
       >
-        <div class="chat-nombre">{{ chat.titulo }}</div>
-        <div class="chat-estado">{{ chat.estado }}</div>
+        <div class="chat-info">
+          <div class="chat-nombre">{{ chat.titulo }}</div>
+          <div class="chat-estado">{{ chat.estado }}</div>
+        </div>
+
+        <div class="btn-borrar" (click)="confirmarBorrado(chat, $event)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </div>
       </div>
 
       <div *ngIf="chats.length === 0" style="text-align: center; padding: 10px; color: gray;">
@@ -39,45 +45,32 @@
     <div class="panel-chat">
 
       <div *ngIf="!chatActivo" style="display: flex; justify-content: center; align-items: center; height: 100%; color: gray;">
-        <p>Selecciona o crea una conversación</p>
+        <p>Selecciona una conversación</p>
       </div>
 
       <div class="mensajes" *ngIf="chatActivo">
         <div *ngFor="let msg of mensajes">
-
           <div class="mensaje sistema" *ngIf="msg.autor === 'sistema'">
             <div class="burbuja burbuja-sistema">{{ msg.text }}</div>
           </div>
-
           <div class="mensaje usuario" *ngIf="msg.autor === 'usuario'">
             <div class="burbuja burbuja-usuario">{{ msg.text }}</div>
           </div>
-
         </div>
 
         <div class="bot-escribiendo" *ngIf="botEscribiendo">
           <div class="loader"></div>
-          <span>El sistema está escribiendo...</span>
+          <span>Escribiendo...</span>
         </div>
       </div>
 
       <div class="opciones" *ngIf="chatActivo && pasoConversacion === 0">
-        <button 
-          class="opcion" 
-          *ngFor="let op of opciones" 
-          (click)="seleccionarMotivo(op)"
-        >
-          {{ op }}
-        </button>
+        <button class="opcion" *ngFor="let op of opciones" (click)="seleccionarMotivo(op)">{{ op }}</button>
       </div>
 
       <ion-footer class="footer-chat" *ngIf="chatActivo && pasoConversacion < 3">
         <div class="input-area">
-          <ion-input
-            placeholder="Escribe tu mensaje..."
-            [(ngModel)]="entradaUsuario"
-            (keyup.enter)="enviarMensaje()"
-          ></ion-input>
+          <ion-input placeholder="Escribe tu mensaje..." [(ngModel)]="entradaUsuario" (keyup.enter)="enviarMensaje()"></ion-input>
           <ion-button (click)="enviarMensaje()" fill="clear">
             <ion-icon name="send-outline"></ion-icon>
           </ion-button>
@@ -85,7 +78,6 @@
       </ion-footer>
 
     </div>
-
   </div>
 
 </ion-content>

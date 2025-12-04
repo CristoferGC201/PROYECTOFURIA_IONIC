@@ -35,3 +35,35 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+/* --- FILTRO PARA DALTONISMO (Escala de Grises / Alto Contraste) --- */
+body.daltonicos {
+    /* Esto pone la app en blanco y negro (útil para acromatopsia) */
+    filter: grayscale(100%) contrast(120%); 
+}
+
+/* --- AJUSTE DE FUENTE --- */
+/* Esto asegura que el cambio de tamaño afecte a Ionic */
+html {
+    /* La transición hace que el cambio de letra se vea suave */
+    transition: font-size 0.3s ease; 
+}
+
+/* --- CORRECCIÓN DE BLOQUEO DE CLICS --- */
+/* Oculta el componente jeep-sqlite para que no tape la interfaz */
+jeep-sqlite {
+    display: none !important;
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    z-index: -1;
+    pointer-events: none; /* ESTO ES LA CLAVE: Deja pasar los clics */
+}
+
+/* --- SOLUCIÓN AL BLOQUEO DE CLICS --- */
+jeep-sqlite {
+  display: none;       /* Que no se vea */
+  pointer-events: none; /* Que los clics lo atraviesen */
+  position: absolute;
+  z-index: -9999;       /* Mandarlo al fondo del abismo */
+}

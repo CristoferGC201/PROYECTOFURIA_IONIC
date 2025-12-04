@@ -7,7 +7,7 @@ import {
   IonButton, IonIcon, IonText, IonItem, IonLabel, IonCard, 
   IonCardHeader, IonCardContent, IonButtons, IonToast 
 } from '@ionic/angular/standalone';
-// Importamos el servicio desde la carpeta 'servicio'
+// Importamos el servicio
 import { DatabaseService } from '../servicio/database.service';
 import { UserAccount } from '../interfaz/user';
 
@@ -16,7 +16,13 @@ import { UserAccount } from '../interfaz/user';
   templateUrl: 'chat.page.html',
   styleUrls: ['chat.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonHeader, IonToolbar, IonTitle, IonContent, IonInput, IonButton, IonIcon, IonText, IonItem, IonLabel, IonCard, IonCardHeader, IonCardContent, IonButtons, IonToast],
+  imports: [
+    CommonModule, 
+    FormsModule, 
+    IonHeader, IonToolbar, IonTitle, IonContent,
+    IonInput, IonButton, IonIcon, IonText, IonItem, IonLabel, 
+    IonCard, IonCardHeader, IonCardContent, IonButtons, IonToast
+  ],
 })
 export class ChatPage implements OnInit {
   
@@ -28,20 +34,26 @@ export class ChatPage implements OnInit {
   constructor(private router: Router, private dbService: DatabaseService) {} 
 
   async ngOnInit() {
-    // INICIALIZAR BD AL ARRANCAR
+    // Inicializamos la base de datos al arrancar
+    // (El servicio ya sabe si usar Web o Nativo internamente)
     try {
       await this.dbService.inicializarPlugin();
-    } catch(e) { console.log('BD ya iniciada', e); }
+    } catch(e) { 
+      console.log('Nota: La BD ya estaba iniciada o hubo un error leve', e); 
+    }
   }
 
   cambiarModo(m: 'login' | 'registro') {
     this.modo = m;
-    this.email = ''; this.password = ''; this.nombre = '';
+    this.email = ''; 
+    this.password = ''; 
+    this.nombre = '';
   }
 
   async registrar() {
     if (!this.email || !this.password || !this.nombre) {
-      alert('Completa todos los campos'); return;
+      alert('Por favor, completa todos los campos.'); 
+      return;
     }
 
     const newUser: UserAccount = {
@@ -52,12 +64,27 @@ export class ChatPage implements OnInit {
 
     try {
       await this.dbService.registrarUsuario(newUser);
-      // Mostramos el dominio para confirmar que funcionó
+      
       const dominio = this.email.split('@')[1];
-      alert(`¡Registrado! Tu dominio es: ${dominio}`);
+      alert(`¡Registro exitoso! Tu dominio asignado es: ${dominio}`);
       this.cambiarModo('login');
-    } catch (error) {
-      alert('Error: El correo ya existe.');
+      
+    } catch (error: any) {
+      console.error('Error capturado en registro:', error);
+
+      // --- LÓGICA PARA MENSAJES AMIGABLES ---
+      let mensajeMostrar = 'Ocurrió un error desconocido al registrar.';
+
+      // 1. Error Web (Lanzado manualmente en database.service.ts)
+      if (error.message && error.message.includes('El correo ya existe')) {
+        mensajeMostrar = '⚠️ Ese correo ya está registrado. Por favor inicia sesión.';
+      }
+      // 2. Error Nativo SQLite (Restricción UNIQUE)
+      else if (JSON.stringify(error).includes('UNIQUE')) {
+        mensajeMostrar = '⚠️ Ese correo ya está registrado en el celular.';
+      }
+
+      alert(mensajeMostrar);
     }
   }
 
@@ -66,17 +93,19 @@ export class ChatPage implements OnInit {
       const usuario = await this.dbService.login(this.email, this.password);
 
       if (usuario) {
-        // Guardar sesión temporalmente
+        // Guardar sesión temporal en memoria para usarla en las otras pestañas
         localStorage.setItem('userId', usuario.id!.toString());
         localStorage.setItem('userName', usuario.name);
         localStorage.setItem('userDomain', usuario.domain!);
         
+        console.log('Login correcto:', usuario);
         this.router.navigate(['/tabs/quejas']); 
       } else {
-        alert('Credenciales incorrectas');
+        alert('Correo o contraseña incorrectos.');
       }
     } catch (e) {
-      alert('Error al iniciar sesión');
+      console.error(e);
+      alert('Error técnico al iniciar sesión. Revisa la consola.');
     }
   }
 }

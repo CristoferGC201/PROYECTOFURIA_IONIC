@@ -1,11 +1,10 @@
+/* --- ESTILOS BASE --- */
 .contenedor {
   display: flex;
   height: 100%;
 }
 
-/* ------------------------------------ */
-/* PANEL IZQUIERDO: CHATS */
-/* ------------------------------------ */
+/* Panel Izquierdo */
 .panel-chats {
   width: 28%;
   background: #f1f1f1;
@@ -15,12 +14,12 @@
 }
 
 .panel-chats h3 {
-  margin-top: 10px;
-  margin-bottom: 15px;
+  margin: 10px 0 15px 0;
   font-weight: bold;
   text-align: center;
 }
 
+/* ITEM DE CHAT */
 .chat-item {
   background: white;
   padding: 12px;
@@ -29,6 +28,12 @@
   cursor: pointer;
   border: 1px solid transparent;
   transition: 0.2s;
+  color: black;
+  
+  /* Flexbox para separar texto y basura */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .chat-item:hover {
@@ -38,6 +43,12 @@
 .chat-item.activo {
   border: 2px solid #3880ff;
   background: #e9f1ff;
+  color: black;
+}
+
+.chat-info {
+  display: flex;
+  flex-direction: column;
 }
 
 .chat-nombre {
@@ -50,42 +61,51 @@
   color: gray;
 }
 
-/* ------------------------------------ */
-/* PANEL DERECHO: MENSAJES */
-/* ------------------------------------ */
+/* BOTÓN BORRAR */
+.btn-borrar {
+  color: #999;
+  padding: 8px;
+  border-radius: 50%;
+  transition: 0.2s;
+  font-size: 18px;
+  z-index: 10; /* Asegura que esté por encima */
+}
+
+.btn-borrar:hover {
+  background: #ffebee;
+  color: #eb445a;
+}
+
+/* Panel Derecho */
 .panel-chat {
   width: 72%;
   display: flex;
   flex-direction: column;
   padding: 10px;
+  background: white;
 }
 
-/* Mensajes */
 .mensajes {
   flex-grow: 1;
   overflow-y: auto;
   padding: 10px;
 }
 
-/* Mensaje del sistema (izquierda) */
 .mensaje.sistema {
   display: flex;
   justify-content: flex-start;
   margin-bottom: 8px;
 }
-
 .burbuja-sistema {
-  background: #d9d9d9;
+  background: #e5e5ea;
   color: black;
 }
 
-/* Mensaje del usuario (derecha) */
 .mensaje.usuario {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 8px;
 }
-
 .burbuja-usuario {
   background: #3880ff;
   color: white;
@@ -96,35 +116,9 @@
   border-radius: 12px;
   max-width: 70%;
   font-size: 15px;
+  line-height: 1.4;
 }
 
-/* Indicador bot está escribiendo */
-.bot-escribiendo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: gray;
-  font-size: 14px;
-  padding: 6px 0;
-}
-
-.loader {
-  width: 12px;
-  height: 12px;
-  background: gray;
-  border-radius: 50%;
-  animation: escribir 1s infinite ease;
-}
-
-@keyframes escribir {
-  0% { opacity: 0.2; }
-  50% { opacity: 1; }
-  100% { opacity: 0.2; }
-}
-
-/* ------------------------------------ */
-/* OPCIONES BOTONES */
-/* ------------------------------------ */
 .opciones {
   display: flex;
   flex-wrap: wrap;
@@ -139,16 +133,12 @@
   background: #3880ff;
   color: white;
   cursor: pointer;
-  transition: 0.2s;
 }
 
 .opcion:hover {
   background: #4d8dff;
 }
 
-/* ------------------------------------ */
-/* FOOTER / INPUT */
-/* ------------------------------------ */
 .footer-chat {
   padding: 10px;
   border-top: 1px solid #ddd;
@@ -164,27 +154,56 @@
 ion-input {
   flex-grow: 1;
   background: #f1f1f1;
-  padding: 8px;
-  border-radius: 8px;
+  color: black;
+  padding: 8px 12px !important;
+  border-radius: 20px;
+  --padding-start: 10px;
 }
 
-/* ------------------------------------ */
-/* RESPONSIVE */
-/* ------------------------------------ */
+.bot-escribiendo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: gray;
+  font-size: 14px;
+  padding: 6px 0;
+  margin-left: 10px;
+}
+
+.loader {
+  width: 10px;
+  height: 10px;
+  background: gray;
+  border-radius: 50%;
+  animation: escribir 1s infinite ease;
+}
+
+@keyframes escribir {
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .contenedor {
-    flex-direction: column;
-  }
-
-  .panel-chats {
-    width: 100%;
-    height: 180px;
-  }
-
-  .panel-chat {
-    width: 100%;
-  }
+  .contenedor { flex-direction: column; }
+  .panel-chats { width: 100%; height: 160px; border-right: none; border-bottom: 1px solid #ddd; }
+  .panel-chat { width: 100%; height: 100%; }
 }
-.chat-background {
-  --background: url('../../assets/camiones-bg.jpg') no-repeat center center / cover;
+
+/* --- MODO OSCURO --- */
+:host-context(body.dark) {
+  .panel-chats { background: #121212; border-right: 1px solid #333; }
+  .panel-chats h3 { color: white; }
+  
+  .chat-item { background: #1e1e1e; color: white; }
+  .chat-item.activo { background: #2c2c2c; border: 2px solid #3880ff; color: white; }
+  .chat-item:hover { border-color: #555; }
+  
+  .btn-borrar:hover { background: #4a1818; color: #ff6b81; }
+
+  .panel-chat { background: #000000; }
+  .burbuja-sistema { background: #2c2c2c; color: white; }
+  .footer-chat { background: #121212; border-top: 1px solid #333; }
+  ion-input { background: #2c2c2c; color: white; --placeholder-color: #aaa; }
 }

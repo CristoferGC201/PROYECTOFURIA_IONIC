@@ -1,18 +1,66 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
-    <ion-title>
-      Cuenta
-    </ion-title>
+    <ion-title>Cuenta</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding ion-text-center">
-    
-    <h2 class="ion-padding-top">¡Hola, {{ nombre }}!</h2>
+<ion-content [fullscreen]="true" class="ion-padding">
 
-    <ion-button expand="block" color="danger" (click)="logout()" style="margin-top: 50px;">
-        <ion-icon slot="start" name="log-out-outline"></ion-icon>
-        CERRAR SESIÓN
+  <div class="ion-text-center ion-margin-bottom">
+    <ion-icon name="person-circle-outline" style="font-size: 80px; color: var(--ion-color-medium);"></ion-icon>
+    <h2 class="ion-no-margin">¡Hola, {{ nombre }}!</h2>
+    <p style="color: gray;">Dominio: <b style="color: var(--ion-color-success);">{{ dominio }}</b></p>
+  </div>
+
+  <h3 class="ion-padding-start">Accesibilidad</h3>
+
+  <ion-list inset="true">
+    
+    <ion-item>
+      <ion-icon slot="start" name="moon-outline"></ion-icon>
+      <ion-label>Modo Oscuro</ion-label>
+      <ion-toggle [(ngModel)]="modoOscuro" (ionChange)="toggleDarkMode()"></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon slot="start" name="eye-outline"></ion-icon>
+      <ion-label>Alto Contraste</ion-label>
+      <ion-toggle [(ngModel)]="modoDaltonicos" (ionChange)="toggleDaltonicos()"></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon slot="start" name="text-outline"></ion-icon>
+      <ion-label style="flex: 0 0 auto; margin-right: 10px;">Tamaño:</ion-label>
+      
+      <select 
+        [(ngModel)]="tamanoLetra" 
+        (change)="cambiarTamanoNativo($event)"
+        style="
+          width: 100%;
+          text-align: center;
+          text-align-last: center; /* Centra el texto en Android/Chrome */
+          border: none; 
+          background: transparent; 
+          color: var(--ion-color-primary); 
+          font-weight: bold; 
+          outline: none;
+          padding: 10px 0;
+          font-size: 16px;
+        ">
+          <option value="14px">Pequeña</option>
+          <option value="16px">Normal</option>
+          <option value="20px">Grande</option>
+          <option value="24px">Muy Grande</option>
+      </select>
+    </ion-item>
+
+  </ion-list>
+
+  <div class="ion-padding-top ion-margin-top">
+    <ion-button expand="block" color="danger" (click)="logout()">
+      <ion-icon slot="start" name="log-out-outline"></ion-icon>
+      CERRAR SESIÓN
     </ion-button>
+  </div>
 
 </ion-content>
